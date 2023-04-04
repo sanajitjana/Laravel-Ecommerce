@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class billing_info extends Model
+class ShipmentDetail extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-
-        'summary',
-        'billing_address',
-        'payment_details',
-        'customer_id'
+        "order_id",
+        "company_name",
+        "company_id",
+        "date_of_shipment"
     ];
 }
