@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ngo;
+use App\Http\Controllers\Controller;
+use App\Models\ngo;
 use Illuminate\Http\Request;
 
 class NgoController extends Controller
 {
+    //
 
     public function index()
     {
-        $ngos = Ngo::latest()->paginate(10);
+        $ngos = ngo::latest()->paginate(10);
 
         // if no data then return 404
         if ($ngos->isEmpty()) {
@@ -19,41 +21,39 @@ class NgoController extends Controller
 
         return response()->json(['status' => 'success', 'data' => $ngos]);
     }
+    
 
     public function store(Request $request)
     {
 
-        $ngo = Ngo::create([
+        $ngo = ngo::create([
             'name' => $request->name,
-            'address' => $request->address,
-            'moblile_number' => $request->mobile_number,
             'email' => $request->email,
-            'certificate_id' => $request->certificate_id
+            'mobile_number' => $request->mobile_number,
+            'address' => $request->address,
+            'certificate_id'=>$request->certificate_id
         ]);
 
         //return data in json formate
         return response()->json(['status' => 'success', 'data' => $ngo]);
     }
 
-    public function show($id)
-    {
-        $ngo = Ngo::find($id);
+     public function show($id){
 
-        //if user is not found, return error
-        if ($ngo == null) {
-            return response()->json(['status' => 'error', 'message' => 'User not found.'], 404);
+        $ngo = ngo::find($id);
+        if($ngo == null ){
+            return response()->json(['status' => 'error','message' => 'User not found.'], 404);
         }
+        return response()->json(['status' =>'success', 'data' => $ngo]);
+     }
 
-        return response()->json(['status' => 'success', 'data' => $ngo]);
-    }
-
-    public function update($id, Request $request)
+    public function update(Request $request, $id)
     {
-        $ngo = Ngo::find($id);
+        $ngo = ngo::find($id);
 
-        //if user is not found, return error
+        //if ngo is not found, return error
         if ($ngo == null) {
-            return response()->json(['status' => 'error', 'message' => 'Ngo not found.'], 404);
+            return response()->json(['status' => 'error', 'message' => 'ngo not found.'], 404);
         }
 
         $ngo->update($request->all());
@@ -62,14 +62,14 @@ class NgoController extends Controller
 
     public function destroy($id)
     {
-        $user = Ngo::find($id);
+        $ngo = ngo::find($id);
 
-        //if user is not found, return error
-        if ($user == null) {
+        //if ngo is not found, return error
+        if ($ngo == null) {
             return response()->json(['status' => 'error', 'message' => 'User not found.'], 404);
         }
 
-        $user->delete();
+        $ngo->delete();
         return response()->json(['status' => 'success', 'data' => true]);
     }
 }

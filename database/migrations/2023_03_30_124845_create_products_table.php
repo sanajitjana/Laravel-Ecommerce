@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ngos', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string("name")->nullable(false);
-            $table->string("address")->nullable(false);
-            $table->string("moblile_number")->nullable(false);
-            $table->string("email")->nullable(false);
-            $table->string("certificate_id")->nullable(false)->unique();
+            $table->string("name")->nullable(false)->unique();
+            $table->string("image_url")->nullable(false);
+            $table->double("price")->nullable(false);
+            $table->unsignedBigInteger("category_id")->index()->nullable(false);
+            $table->foreign("category_id")->references("id")->on("categories")->onDelete("cascade");
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ngos');
+        Schema::dropIfExists('products');
     }
 };

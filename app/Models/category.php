@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ngo extends Model
+class category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','address','mobile_number','email','certificate_id'];
-
-    
+    protected $fillable = [
+        'name',
+        'parent_category'
+    ];
 }
