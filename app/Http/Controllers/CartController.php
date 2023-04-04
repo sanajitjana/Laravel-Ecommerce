@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\cart;
+use App\Models\Cart;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -14,19 +14,16 @@ class CartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
+    public function index()
+    {
 
-        $cart = cart::latest()->paginate(10);
+        $cart = Cart::latest()->paginate(10);
 
-                // if no data then return 404
-        if($cart -> isEmpty()){
-            return response()->json(['status' => 'error','message' => 'No Cart found']);
-
+        // if no data then return 404
+        if ($cart->isEmpty()) {
+            return response()->json(['status' => 'error', 'message' => 'No Cart found']);
         }
-        return response()->json(['status' =>'success','data' => $cart]);
-
-
-
+        return response()->json(['status' => 'success', 'data' => $cart]);
     }
 
     /**
@@ -35,51 +32,52 @@ class CartController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function create(){
+    public function create()
+    {
+    }
 
-     }
+    public function store(Request $request)
+    {
 
-     public function store(Request $request){
-
-        $cart = cart::create([
-        'product_id' => $request-> product_id,    
-        'total_price' => $request-> total_price,
-        'customer_id' => $request-> customer_id
+        $cart = Cart::create([
+            'product_id' => $request->product_id,
+            'total_price' => $request->total_price,
+            'customer_id' => $request->customer_id
 
         ]);
-        return response()->json(['status' =>'success','data' => $cart]);
-     }
+        return response()->json(['status' => 'success', 'data' => $cart]);
+    }
 
-     public function show($id){
-        $cart = cart::find($id);
+    public function show($id)
+    {
+        $cart = Cart::find($id);
 
-        if($cart == null ){
-            return response()->json(['status' =>'error','message' => 'cart not found' ]);
+        if ($cart == null) {
+            return response()->json(['status' => 'error', 'message' => 'cart not found']);
         }
-        return response()->json(['status' =>'success','data' => $cart]);
-     }
+        return response()->json(['status' => 'success', 'data' => $cart]);
+    }
 
-     public function update(Request $request, $id){
-    
-        $cart = cart::find($id);
+    public function update(Request $request, $id)
+    {
 
-        if($cart == null){
-            return response()->json(['status' => 'error','message' => 'No Cart found']);
+        $cart = Cart::find($id);
 
+        if ($cart == null) {
+            return response()->json(['status' => 'error', 'message' => 'No Cart found']);
         }
         $cart->update($request->all());
-        return response()->json(['status' =>'success','data' => $cart]);
+        return response()->json(['status' => 'success', 'data' => $cart]);
     }
 
-    public function destroy($id){
-        $cart = cart::find($id);
+    public function destroy($id)
+    {
+        $cart = Cart::find($id);
 
-        if($cart == null){
-            return response()->json(['status' => 'error','message' => 'No Cart found']);
-
+        if ($cart == null) {
+            return response()->json(['status' => 'error', 'message' => 'No Cart found']);
         }
         $cart->delete();
-        return response()->json(['status' =>'success','data' => $cart]);
+        return response()->json(['status' => 'success', 'data' => $cart]);
     }
-
 }

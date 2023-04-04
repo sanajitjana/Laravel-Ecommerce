@@ -2,29 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Donation_details;
+use App\Models\DonationDetails;
 use Illuminate\Http\Request;
 
 class DonationDetailsController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
 
-        $donation_details = Donation_details::latest()->paginate(10);
+        $donation_details = DonationDetails::latest()->paginate(10);
 
-         // if no donation_details data then return 404
-         if ($donation_details->isEmpty()) {
+        // if no donation_details data then return 404
+        if ($donation_details->isEmpty()) {
             return response()->json(['status' => 'error', 'message' => 'No Donation_details found.'], 404);
         }
 
         return response()->json(['status' => 'success', 'data' => $donation_details]);
     }
-    
+
 
     public function store(Request $donation_details)
     {
 
-        $donation_details = Donation_details::create([
+        $donation_details = DonationDetails::create([
             'receiver_name' => $donation_details->receiver_name,
             'date_of_donation' => $donation_details->date_of_donation,
             'customer_id' => $donation_details->customer_id,
@@ -35,18 +36,19 @@ class DonationDetailsController extends Controller
         return response()->json(['status' => 'success', 'data' => $donation_details]);
     }
 
-     public function show($id){
+    public function show($id)
+    {
 
-        $donation_details = Donation_details::find($id);
-        if($donation_details == null ){
-            return response()->json(['status' => 'error','message' => 'Donation_details not found.'], 404);
+        $donation_details = DonationDetails::find($id);
+        if ($donation_details == null) {
+            return response()->json(['status' => 'error', 'message' => 'Donation_details not found.'], 404);
         }
-        return response()->json(['status' =>'success', 'data' => $donation_details]);
-     }
+        return response()->json(['status' => 'success', 'data' => $donation_details]);
+    }
 
     public function update(Request $request, $id)
     {
-        $donation_details = Donation_details::find($id);
+        $donation_details = DonationDetails::find($id);
 
         //if ngo is not found, return error
         if ($donation_details == null) {
@@ -59,7 +61,7 @@ class DonationDetailsController extends Controller
 
     public function destroy($id)
     {
-        $donation_details = Donation_details::find($id);
+        $donation_details = DonationDetails::find($id);
 
         //if donation_details is not found, return error
         if ($donation_details == null) {

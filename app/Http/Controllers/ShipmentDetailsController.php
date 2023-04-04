@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\shipment_detail;
+use App\Models\ShipmentDetail;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 
@@ -10,88 +10,92 @@ class ShipmentDetailsController extends Controller
 {
     //
 
-    public function index(){
+    public function index()
+    {
 
-        $shipmentDetails = shipment_detail::latest()->paginate(10);
+        $shipmentDetails = ShipmentDetail::latest()->paginate(10);
 
-        if($shipmentDetails->isEmpty()){
+        if ($shipmentDetails->isEmpty()) {
             return response()->json([
-               'status' =>'error',
-                'message' =>"invalid shipment details"
-            ]); 
+                'status' => 'error',
+                'message' => "invalid shipment details"
+            ]);
         }
 
         return response()->json([
-            "status" =>"success",
-            "message" =>$shipmentDetails
+            "status" => "success",
+            "message" => $shipmentDetails
         ]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
-        $shipmentDetails = shipment_detail::create([
-            "order_id" =>$request->order_id,
-            "company_name"=>$request->company_name,
-            "company_id"=>$request->company_id,
-            "date_of_shipment"=>$request->date_of_shipment
+        $shipmentDetails = ShipmentDetail::create([
+            "order_id" => $request->order_id,
+            "company_name" => $request->company_name,
+            "company_id" => $request->company_id,
+            "date_of_shipment" => $request->date_of_shipment
         ]);
 
         return response()->json([
-            "status" =>"success",
-            "message" =>$shipmentDetails
+            "status" => "success",
+            "message" => $shipmentDetails
         ]);
-
     }
 
-    public function update(Request $request,$id){
-        $shipmentDetails = shipment_detail::find($id);
+    public function update(Request $request, $id)
+    {
+        $shipmentDetails = ShipmentDetail::find($id);
 
-        if($shipmentDetails == null){
+        if ($shipmentDetails == null) {
             return response()->json([
-              'status' =>'error',
-               'message' =>"invalid shipment details"
-            ]); 
+                'status' => 'error',
+                'message' => "invalid shipment details"
+            ]);
         }
 
         $shipmentDetails->update($request->all());
 
         return response()->json([
-            "status" =>"success",
-            "message" =>$shipmentDetails
+            "status" => "success",
+            "message" => $shipmentDetails
         ]);
     }
 
-    public function show($id){
-        $shipmentDetails = shipment_detail::find($id);
+    public function show($id)
+    {
+        $shipmentDetails = ShipmentDetail::find($id);
 
-        if($shipmentDetails== null){
+        if ($shipmentDetails == null) {
             return response()->json([
-             'status' =>'error',
-              'message' =>"invalid shipment details"
-            ]); 
+                'status' => 'error',
+                'message' => "invalid shipment details"
+            ]);
         }
 
         return response()->json([
-            "status" =>"success",
-            "message" =>$shipmentDetails
+            "status" => "success",
+            "message" => $shipmentDetails
         ]);
     }
 
-    public function destroy($id){
-        $shipmentDetails = shipment_detail::find($id);
+    public function destroy($id)
+    {
+        $shipmentDetails = ShipmentDetail::find($id);
 
-        if($shipmentDetails == null){
+        if ($shipmentDetails == null) {
             return response()->json([
-            'status' =>'error',
-             'message' =>"invalid shipment details"
-            ]); 
+                'status' => 'error',
+                'message' => "invalid shipment details"
+            ]);
         }
 
         $shipmentDetails->delete();
 
         return response()->json([
-            "status" =>"success",
-            "message" =>$shipmentDetails
+            "status" => "success",
+            "message" => $shipmentDetails
         ]);
     }
 }
