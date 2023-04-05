@@ -13,7 +13,6 @@ Route::group(['namespace' => 'api\admin', 'prefix' => 'admin.'], function () {
 
         //dashboard routes
         Route::group(['prefix' => 'dashboard'], function () {
-            Route::get('/', 'DashboardController@dashboard')->name('index');
         });
 
         //reports routes
