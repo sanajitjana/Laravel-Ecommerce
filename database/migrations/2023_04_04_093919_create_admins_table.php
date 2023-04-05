@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('password', 80);
             $table->string('remember_token', 100)->nullable();
             $table->timestamps();
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status')->default(1)->comment('1=>active,2=>deactive');
         });
     }
 

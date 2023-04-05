@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class NGO extends Model
 {
     use HasFactory;
-
+    protected $table = 'ngos';
     protected $fillable = ['name', 'address', 'mobile_number', 'email', 'certificate_id'];
 }

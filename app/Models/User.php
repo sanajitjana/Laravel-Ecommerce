@@ -43,4 +43,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'phone_verified_at' => 'datetime',
     ];
+
+    protected function findByEmail($email)
+    {
+        return User::where('email', $email)->first();
+    }
 }

@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('house_no', 50)->nullable();
             $table->string('apartment_no', 50)->nullable();
             $table->string('firebase_token', 255)->nullable();
-            $table->tinyInteger('is_active')->default(1);
+            $table->tinyInteger('status')->default(1)->comment('1=>active, 2=>blocked, 3=>deleted');
             $table->tinyInteger('is_email_verified')->default(0);
             $table->tinyInteger('is_phone_verified')->default(0);
             $table->double('wallet_balance', 8, 2)->nullable();

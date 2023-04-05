@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NgoController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,22 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-//public api
-Route::group(['prefix' => 'auth', 'namespace' => 'auth'], function () {
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
-});
-
-
 // api for only login user
 Route::middleware('auth:api')->group(function () {
-
-    Route::group(['prefix' => 'auth', 'namespace' => 'auth'], function () {
-        Route::get('/users', [UserController::class, 'index']);
-        Route::get('/users/{id}', [UserController::class, 'show']);
-        Route::put('/users/{id}', [UserController::class, 'update']);
-        Route::delete('/users/{id}', [UserController::class, 'destroy']);
-    });
 
     // Ngo's route
     Route::get('/ngos', [NgoController::class, 'index']);

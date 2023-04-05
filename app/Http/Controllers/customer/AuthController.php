@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\customer;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,7 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        // check validation
         $request->validate([
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
@@ -18,6 +20,7 @@ class AuthController extends Controller
             'phone' => 'required|string|min:10|max:10',
         ]);
 
+        // create new user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -25,6 +28,7 @@ class AuthController extends Controller
             'password' => bcrypt($request->password)
         ]);
 
+        // return success message
         return response()->json([
             'message' => 'User successfully registered',
             'status' => 201,
@@ -34,15 +38,34 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+
+        //check validation
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:100',
             'password' => 'required|string|min:6',
         ]);
-
-        if (!$token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->first()
+            ], 422);
         }
 
+        //check user exists or not
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        //check user credentials
+        if (!Auth::attempt(['email' => $request->email, 'password' => $request->password], $user->id)) {
+            return response()->json([
+                'message' => 'Invalid credentials'
+            ], 401);
+        }
+
+        //create new token
         $token = auth()->user()->createToken('User Login')->accessToken;
         return response()->json(
             [
