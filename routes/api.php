@@ -2,6 +2,14 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NgoController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\DonationDetailsController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\SellerController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ShipmentDetailsController;
+// use App\Http\Controllers\
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -81,4 +89,10 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/billings/{id}', [BillingController::class, 'show']);
     Route::put('/billings/{id}', [BillingController::class, 'update']);
     Route::delete('/billings/{id}', [BillingController::class, 'destroy']);
+});
+
+
+Route::fallback(function(){
+    return response()->json([
+        'message' => 'Page Not Found. If error persists, contact Toyrejoy@gmail.com'], 404);
 });

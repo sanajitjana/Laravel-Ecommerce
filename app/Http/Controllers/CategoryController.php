@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -21,15 +22,21 @@ class CategoryController extends Controller
         return response()->json(['status' => 'success', 'data' => $category]);
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
+        $existingName = Category::where('name', $request->name)->first();;
+        
+        if($existingName != null ){
+            return response()->json(['status' => 'error','message' => 'Category Name already exists.'], 422);
+        }else{
 
-
-        $category = Category::create([
-            'name' => $request->name,
-            'parent_category' => $request->parent_category,
-
-        ]);
+            
+            $category = Category::create([
+                'name' => $request->name,
+                'parent_category' => $request->parent_category,
+                
+            ]);
+        }
 
         return response()->json(['status' => 'success', 'data' => $category]);
     }

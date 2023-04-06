@@ -20,3 +20,8 @@ Route::group(['middleware' => ['admin']], function () {
     Route::group(['prefix' => 'reports'], function () {
     });
 });
+
+Route::fallback(function(){
+    return response()->json([
+        'message' => 'Page Not Found. If error persists, contact Toyrejoy@gmail.com'], 404);
+});
