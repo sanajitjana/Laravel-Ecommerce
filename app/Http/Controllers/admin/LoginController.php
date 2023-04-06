@@ -79,7 +79,7 @@ class LoginController extends Controller
                 'status' => 403,
                 'message' => 'You are blocked!, contact with master admin.'
             ], 403);
-        } else  if (!Hash::check($request->password, $admin->password) || $request->email != $admin->email) {
+        } else  if (Auth::attempt($request->password, $admin->password) || $request->email != $admin->email) {
 
             return response()->json([
                 'status' => 401,
