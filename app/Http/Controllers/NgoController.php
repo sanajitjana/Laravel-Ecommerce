@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\NGO;
+use App\Http\Requests\NgoRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class NgoController extends Controller
 {
@@ -23,7 +25,7 @@ class NgoController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(NgoRequest $request)
     {
 
         $ngo = NGO::create([
@@ -71,6 +73,6 @@ class NgoController extends Controller
         }
 
         $ngo->delete();
-        return response()->json(['status' => 'success', 'data' => true]);
+        return response()->json(['status' => 200, 'data' => $ngo]);
     }
 }

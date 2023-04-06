@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string("address")->nullable(false);
             $table->string("mobile_number")->nullable(false);
             $table->string("email")->nullable(false);
-            $table->string("certificate_id")->nullable(false)->unique();
+            $table->string("certificate_id");
             $table->timestamps();
         });
     }

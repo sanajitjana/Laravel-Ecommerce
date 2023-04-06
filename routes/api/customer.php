@@ -20,3 +20,8 @@ Route::group(['namespace' => 'api\customer', 'prefix' => 'api/customer'], functi
         Route::delete('/profile/{id}', [ProfileController::class, 'delete']);
     });
 });
+
+Route::fallback(function(){
+    return response()->json([
+        'message' => 'Page Not Found. If error persists, contact Toyrejoy@gmail.com'], 404);
+});

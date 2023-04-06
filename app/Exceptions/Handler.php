@@ -2,49 +2,65 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
     /**
-     * A list of exception types with their corresponding custom log levels.
-     *
-     * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
-     */
-    protected $levels = [
-        //
-    ];
-
-    /**
      * A list of the exception types that are not reported.
      *
-     * @var array<int, class-string<\Throwable>>
+     * @var array
      */
     protected $dontReport = [
         //
     ];
 
     /**
-     * A list of the inputs that are never flashed to the session on validation exceptions.
+     * Report or log an exception.
      *
-     * @var array<int, string>
+     * @param  \Throwable  $exception
+     * @return void
+     *
+     * @throws \Exception
      */
-    protected $dontFlash = [
-        'current_password',
-        'password',
-        'password_confirmation',
-    ];
+    public function report(Throwable $exception)
+    {
+        parent::report($exception);
+    }
 
     /**
-     * Register the exception handling callbacks for the application.
+     * Render an exception into an HTTP response.
      *
-     * @return void
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $exception
+     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Throwable
      */
-    public function register()
+
+
+    public function render($request, Throwable $exception)
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        
+        if ($request->expectsJson()) {
+            if ($exception instanceof HttpException) {
+                $statusCode = $exception->getStatusCode();
+                $message = $exception->getMessage() ?: Response::$statusTexts[$statusCode];
+                return new JsonResponse([
+                    'error' => $message,
+                    'status' => $statusCode,
+                ], $statusCode);
+            }
+            return new JsonResponse([
+                'error' => $exception->getMessage(),
+                'status' => 500,
+            ], 500);
+        }
+        return parent::render($request, $exception);
     }
 }
