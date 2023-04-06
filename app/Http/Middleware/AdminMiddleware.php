@@ -17,7 +17,7 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::guard('admin')->check()) {
+        if (Auth::guard('admin')->check() && auth('admin')->user()->is_active) {
             return $next($request);
         } elseif (Auth::guard('admin')->check()) {
             auth()->guard('admin')->logout();
