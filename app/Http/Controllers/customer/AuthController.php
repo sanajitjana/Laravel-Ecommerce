@@ -46,6 +46,7 @@ class AuthController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
+                'status' => 422,
                 'message' => $validator->errors()->first()
             ], 422);
         }
@@ -61,17 +62,32 @@ class AuthController extends Controller
         //check user credentials
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->password], $user->id)) {
             return response()->json([
+                'status' => 401,
                 'message' => 'Invalid credentials'
             ], 401);
         }
 
         //create new token
-        $token = auth()->user()->createToken('User Login')->accessToken;
+        $token = Auth::user()->createToken('User Login')->accessToken;
         return response()->json(
             [
                 'message' => 'User successfully logged in',
                 'status' => 200,
                 'token' => $token
+            ],
+            200
+        );
+    }
+
+    public function logout()
+    {
+        if (Auth::check()) {
+            Auth::user()->token()->delete();
+        }
+        return response()->json(
+            [
+                'status' => 200,
+                'message' => 'User successfully logged out',
             ],
             200
         );
